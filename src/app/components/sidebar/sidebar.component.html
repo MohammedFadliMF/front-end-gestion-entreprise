@@ -1,0 +1,195 @@
+<!-- #ebeded -->
+<div
+  class=" pt-5 bg-[#F9F9F9] overflow-hidden sticky px-4 w-64 h-full"
+>
+  <ul class="space-y-9 px-1 ">
+    <div class="flex flex-col space-y-4">
+      <li
+        class="pl-3 rounded-md space-x-4 flex items-center p-2 cursor-pointer hover:bg-blk hover:bg-opacity-5"
+      >
+        <!-- <img class="w-5 h-5 rounded-md" src="../../../assets/Button (1).png" /> -->
+        <!-- <span>{{ selectedCompany }}</span> -->
+        
+        <mat-icon>store</mat-icon>
+        <div class="flex gap-1 items-center">
+          <span class="text-[#091626] text-xl font-normal">{{current_company.companyName}}</span>      
+          <select
+            class="w-4 bg-transparent"
+            name=""
+            id=""
+            [(ngModel)]="selectedCompany"
+            (change)="setCurrentCompany()"
+          >
+            <!-- <option  value="" disabled>Select</option> -->
+            <option *ngFor="let item of companies" [ngValue]="item">
+              {{ item.companyName }}
+            </option>
+            <!-- <option>Create</option> -->
+          </select>
+        </div>
+        <mat-icon  routerLink="/home/new-company">add</mat-icon>
+        
+        <!-- <button mat-button [matMenuTriggerFor]="menu">nn</button>
+        <mat-menu #menu="matMenu">
+          <button *ngFor="let item of companies"  mat-menu-item>{{item.companyName}}</button>
+        </mat-menu> -->
+
+        <!-- <span class="text-[#091626] text-xl font-semibold ">{{companies[0].companyName}}</span> -->
+      </li>
+      <hr />
+    </div>
+    <div class="space-y-2">
+      <li
+        routerLink="/home"
+        class="pl-3 rounded-md flex items-center p-2 cursor-pointer hover:bg-[#ECECEC] space-x-4"
+      >
+        <mat-icon class="w-5 h-5">bar_chart_4_bars</mat-icon>
+        <span
+          mat-raised-button
+          matTooltip="Dashboard"
+          matTooltipPosition="right"
+          class="text-sm text-gray-600"
+          >Dashboard</span
+        >
+      </li>
+      <li
+        routerLink="/home/customers"
+        class="pl-3 rounded-md flex items-center p-2 cursor-pointer hover:bg-gray-100 space-x-4"
+      >
+        <mat-icon class="w-5 h-5">person</mat-icon>
+        <span
+          mat-raised-button
+          matTooltip="Items"
+          matTooltipPosition="right"
+          class="text-sm text-gray-600"
+          >Customers</span
+        >
+      </li>
+      <li
+        routerLink="/home/items"
+        class="pl-3 rounded-md flex items-center p-2 cursor-pointer hover:bg-[#091626] hover:text-white space-x-4"
+      >
+        <mat-icon class="w-5 h-5">star</mat-icon>
+        <span
+          mat-raised-button
+          matTooltip="Items"
+          matTooltipPosition="right"
+          class="hover:text-white text-sm text-gray-600"
+          >Items</span
+        >
+      </li>
+      <li
+        routerLink="/home/chat-room"
+        class="pl-3 rounded-md flex items-center p-2 cursor-pointer hover:bg-gray-100 space-x-4"
+      >
+        <mat-icon class="w-5 h-5">groups</mat-icon>
+
+        <span
+          mat-raised-button
+          matTooltip="Items"
+          matTooltipPosition="right"
+          class="text-sm text-gray-600"
+          >Chat</span
+        >
+      </li>
+      <li
+        routerLink="/home/invoices"
+        class="pl-3 rounded-md flex items-center p-2 cursor-pointer hover:bg-gray-100 space-x-4"
+      >
+        <mat-icon>description</mat-icon>
+        <span
+          mat-raised-button
+          matTooltip="Purchases"
+          matTooltipPosition="right"
+          class="text-sm text-gray-600"
+          >Invoices</span
+        >
+      </li>
+      <li
+        routerLink="/home/taxes"
+        class="pl-3 rounded-md flex items-center p-2 cursor-pointer hover:bg-gray-100 space-x-4"
+      >
+        <mat-icon>price_change</mat-icon>
+        <span
+          mat-raised-button
+          matTooltip="Banking"
+          matTooltipPosition="right"
+          class="text-sm text-gray-600"
+          >Taxes</span
+        >
+      </li>
+      <li
+         *ngIf="current_company.permission === 'ADMIN'"
+        routerLink="/home/expenses"
+        class="pl-3 rounded-md flex items-center p-2 cursor-pointer hover:bg-gray-100 space-x-4"
+      >
+        <mat-icon> analytics </mat-icon>
+        <span
+          mat-raised-button
+          matTooltip="Banking"
+          matTooltipPosition="right"
+          class="text-sm text-gray-600"
+          >Expenses</span
+        >
+      </li>
+
+      <!-- <li
+        routerLink="/home/reports"
+        class="pl-3 rounded-md flex items-center p-2 cursor-pointer hover:bg-gray-100 space-x-4"
+      >
+        <mat-icon> analytics </mat-icon>
+        <span
+          mat-raised-button
+          matTooltip="Reports"
+          matTooltipPosition="right"
+          class="text-sm text-gray-600"
+          >Reports</span
+        >
+      </li> -->
+    </div>
+
+    <li
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      class="pl-3 rounded-md flex items-center p-2 cursor-pointer hover:bg-gray-100 space-x-2"
+    >
+      <mat-icon> settings </mat-icon>
+
+      <span
+        mat-raised-button
+        matTooltip="Settings"
+        matTooltipPosition="right"
+        class="text-sm text-gray-600"
+        >Settings</span
+      >
+    </li>
+    <mat-menu #menu="matMenu">
+      <button
+        *ngIf="current_company.permission === 'ADMIN'"
+        routerLink="/home/setting-chat"
+        mat-menu-item
+      >
+        <mat-icon>groups</mat-icon>
+        <span>Rooms</span>
+      </button>
+
+      <button
+      *ngIf="current_company.permission === 'ADMIN'"
+      routerLink="/home/setting-users" mat-menu-item>
+        <mat-icon>manage_accounts</mat-icon>
+        <span>Users</span>
+      </button>
+      <button
+      *ngIf="current_company.permission === 'ADMIN'"
+      routerLink="/home/setting-company" mat-menu-item>
+        <mat-icon>store</mat-icon>
+        <span>Company</span>
+      </button>
+      <button
+      routerLink="/home/setting-profile" mat-menu-item>
+        <mat-icon>settings_account_box</mat-icon>
+        <span>Profile</span>
+      </button>
+    </mat-menu>
+  </ul>
+</div>

@@ -1,0 +1,58 @@
+<div class="p-5 w-96 space-y-6">
+  <p class="text-xl  text-[#091626]  font-extralight">New Room:</p>
+
+  <form
+    [formGroup]="formChat"
+    (ngSubmit)="createChat()"
+    class="flex flex-col space-y-6"
+  >
+    <div class="flex space-x-6">
+      <div class="flex flex-col w-full space-y-2">
+        <label class="text-sm text-gray-800">
+          Name <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="text"
+          placeholder="enter name"
+          formControlName="name"
+        />
+      </div>
+          
+     
+    </div>
+    <div class="flex justify-end gap-3">
+      <button
+        class="bg-white p-2 rounded-md text-[#091626] border border-gray-400"
+        mat-dialog-close
+      >
+        Cancel
+      </button>
+      <button
+      [disabled]="formChat.invalid || users_invited.length==0"
+        type="submit"
+        class="bg-[#122d4d] p-2 rounded-md text-white hover:bg-[#091626]"
+      >
+        Confirm
+      </button>
+    </div>
+  </form>
+   <p-multiSelect
+            class="w-56 !important"
+            [options]="users"
+            [(ngModel)]="users_invited"
+            placeholder="invite Users"
+            scrollHeight="250px"
+            display="chip"
+          >
+            <ng-template let-option pTemplate="item">
+              <div class="flex align-items-center">
+                <!-- <img 
+                  src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                  class="mr-2 flag flag-" 
+                  style="width: 20px" /> -->
+                <span>{{ option.username }}</span>
+              </div>
+            </ng-template>
+    </p-multiSelect>
+</div>

@@ -1,0 +1,268 @@
+<div class="h-full w-full flex space-x-3">
+  <div class="w-80 h-full bg-[#FCFCFC] pb-2 px-2">
+    <div class="h-full overflow-y-auto">
+      <div
+        class="flex justify-between text-sm font-bold text-gray-600 dark:text-gray-200 p-3"
+      >
+        <span>Team Spaces</span>
+        <!-- <span *ngIf="current_company.permission === 'ADMIN'">create room</span> -->
+      </div>
+
+      <div class="flex p-1">
+        <input
+          style="border-bottom: none !important"
+          class="text-gray-700 text-sm p-2 focus:outline-none bg-[#F7F7F9] w-full rounded-l-md"
+          type="text"
+          placeholder="Search ..."
+        />
+        <div
+          class="pointer-events-none bg-[#F7F7F9] flex justify-center items-center pr-3 text-gray-400 rounded-r-md"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="{2}"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+      </div>
+    
+      <!-- rooms -->
+      <div
+        *ngFor="let room of rooms"
+        class="flex items-center p-2 cursor-pointer"
+        [ngClass]="{ 'bg-gray-100': room === current_room }"
+      >
+        <div class="w-7 h-7 m-1 flex items-center">
+          <img
+            class="rounded-full"
+            src="https://cdn.pixabay.com/photo/2015/04/06/11/08/cloud-709105_1280.png"
+            alt="avatar"
+          />
+        </div>
+        <div class="flex-grow p-1 items-center" (click)="selectRoom(room)">
+          <div class="flex justify-between text-md">
+            <div class="text-sm font-medium text-gray-700 dark:text-gray-200">
+              {{ room }}
+            </div>
+            <div class="text-xs text-gray-400 dark:text-gray-300">19:28</div>
+          </div>
+          <div class="text-sm text-gray-500 dark:text-gray-400 w-40 truncate">
+            last message
+          </div>
+        </div>
+      </div>
+      <!-- rooms -->
+
+    </div>
+  </div>
+
+  <div
+    *ngIf="rooms.length > 0 && current_room != null; else elseBlock"
+    class="h-full flex flex-grow flex-col"
+  >
+    <div class="bg-[#FCFCFC] flex p-2 align-middle items-center">
+      <img
+        class="w-8 h-8 rounded-full"
+        src="https://cdn.pixabay.com/photo/2015/04/06/11/08/cloud-709105_1280.png"
+        alt="avatar"
+      />
+
+      <div class="flex-grow p-2">
+        <div class="text-black font-semibold">{{ current_room }}</div>
+        <span class="text-xs text-gray-700 ml-1">12 members</span>
+      </div>
+      <div class="p-2 text-black cursor-pointer hover:bg-gray-300 rounded-full">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="{2}"
+            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div
+      class="w-full flex-grow bg-white p-2 overflow-y-auto"
+      #messageContainer
+    >
+      <div *ngFor="let item of extract_messages; let i = index">
+        <!-- Date separator -->
+        <div *ngIf="item.type === 'separator'" class="flex justify-center">
+          <span class="bg-gray-200 text-gray-600 rounded-full px-4 py-1 my-2">{{
+            item.date
+          }}</span>
+        </div>
+
+        <!-- Message -->
+        <div
+          *ngIf="item.type === 'message'"
+          class="flex"
+          [ngClass]="{
+            'justify-end': item.message.senderId === current_user.userId,
+            'justify-start': item.message.senderId !== current_user.userId
+          }"
+          (dblclick)="removeMessage(item.message.id)"
+        >
+          <img
+            class="w-5 h-5 m-3 rounded-full"
+            src="https://cdn.pixabay.com/photo/2017/01/31/21/23/avatar-2027366_960_720.png"
+            alt="avatar"
+            *ngIf="
+              item.message.senderId !== current_user.userId &&
+              (i === 0 ||
+                extract_messages[i - 1]?.message?.senderId !==
+                  item.message.senderId)
+            "
+          />
+          <div class="flex flex-col">
+            <div class="flex space-x-1">
+              <span
+                *ngIf="
+                  item.message.senderId !== current_user.userId &&
+                  (i === 0 ||
+                    extract_messages[i - 1]?.message?.senderId !==
+                      item.message.senderId)
+                "
+                class="font-medium text-gray-700"
+                >{{ item.message.senderName }}</span
+              >
+              <span class="text-xs text-gray-400">{{
+                item.message.createAt
+              }}</span>
+            </div>
+            <div
+              *ngIf="item.message.isFile; else textMessage"
+              class="max-w-xs break-words p-2 mx-2 my-1 rounded-lg bg-gray-100 text-black text-sm"
+            >
+              <ng-container
+                *ngIf="isImage(item.message.content); else nonImageFile"
+              >
+                <div class="flex flex-col items-center">
+                  <img
+                    [src]="item.message.content"
+                    [alt]="item.message.fileName"
+                    class="max-w-full h-auto mb-2"
+                  />
+                  <a
+                    [href]="item.message.content"
+                    [download]="item.message.fileName"
+                    class="flex items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 mr-2"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M15.707 10.293a1 1 0 00-1.414 0L10 14.586V3a1 1 0 00-2 0v11.586l-4.293-4.293a1 1 0 00-1.414 1.414l6 6a1 1 0 001.414 0l6-6a1 1 0 000-1.414z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    Download {{ item.message.fileName }}
+                  </a>
+                </div>
+              </ng-container>
+              <ng-template #nonImageFile>
+                <div class="flex items-center">
+                  <a
+                    [href]="item.message.content"
+                    [download]="item.message.fileName"
+                    class="flex items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 mr-2"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M15.707 10.293a1 1 0 00-1.414 0L10 14.586V3a1 1 0 00-2 0v11.586l-4.293-4.293a1 1 0 00-1.414 1.414l6 6a1 1 0 001.414 0l6-6a1 1 0 000-1.414z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    {{ item.message.fileName }}
+                  </a>
+                </div>
+              </ng-template>
+            </div>
+            <ng-template #textMessage>
+              <span
+                [ngClass]="{
+                  'bg-[#F7F7F9] text-black text-sm rounded-bl-none sm:max-w-3/4 md:max-w-2/6':
+                    item.message.senderId !== current_user.userId,
+                  'bg-[#091626] text-white text-sm rounded-br-none sm:max-w-3/4 md:max-w-2/6':
+                    item.message.senderId === current_user.userId
+                }"
+                class="max-w-xs break-words p-2 mx-2 my-1 rounded-lg"
+              >
+                {{ item.message.content }}
+              </span>
+            </ng-template>
+          </div>
+        </div>
+        <!--end  Message -->
+      </div>
+    </div>
+
+    <div class="p-2 rounded-xl rounded-tr-none rounded-tl-none bg-white">
+      <div class="flex items-center">
+        <div class="p-2 text-gray-600 ">
+          <label for="fileInput">
+           <mat-icon>attachment</mat-icon>
+          </label>
+          <input
+            id="fileInput"
+            type="file"
+            (change)="uploadFile($event)"
+            class="hidden"
+          />
+        </div>
+        <div class="rounded-lg flex flex-grow p-1 px-1 bg-gray-100">
+          <input
+            style="border-bottom: none !important"
+            class="text-gray-700 dark:text-gray-200 text-sm p-2 focus:outline-none bg-gray-100 flex-grow"
+            placeholder="Type your message ..."
+            type="text"
+            [(ngModel)]="message"
+            (keydown.enter)="sendMessageToRoom()"
+          />
+          <span
+            (click)="sendMessageToRoom()"
+            class="bg-gray-100 flex justify-center items-center text-gray-400 rounded-r-md"
+          >
+            <mat-icon class="text-blue-800 hover:cursor-pointer">send</mat-icon>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #elseBlock>
+    <div class="flex flex-grow justify-center items-center">
+      <span *ngIf="rooms.length == 0"
+        >Your messages <span class="text-blue-600 cursor-pointer">Send</span> a
+        request to start a chat.
+      </span>
+      <span *ngIf="rooms.length > 0"> select room </span>
+    </div>
+  </ng-template>
+</div>

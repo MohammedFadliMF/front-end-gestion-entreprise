@@ -1,0 +1,255 @@
+<form
+  [formGroup]="formInvoice"
+  (ngSubmit)="createInvoice()"
+  class="px-5 pb-5 rounded-md space-y-8 bg-white"
+>
+<p class="text-2xl  text-[#091626]  font-extralight flex items-center gap-2">New Invoice<mat-icon >star</mat-icon></p>
+  
+
+<div class="flex flex-col space-y-3">
+  <p class="text-gray-500 font-normal">
+    Les détails de facturation apparaissent sur votre facture émise. La date de
+    facturation est utilisée dans le tableau de bord et les rapports.
+    Sélectionnez la date à laquelle vous souhaitez être payé comme Date
+    d'Échéance.
+  </p>
+  <div class="flex justify-between bg-[#FCFCFC] p-3 rounded-md">
+      <div class="flex flex-col space-y-1">
+        <label class="font-medium text-[#091626]">
+          Client<span class="p-1 text-red-600">*</span>
+        </label>
+
+        <select
+          *ngIf="customers && customers.length > 0; else customers_not_found"
+          formControlName="customer"
+          class="w-56 px-3 py-2 border border-gray-200 rounded-md bg-white focus:outline-none"
+          name="type"
+          id=""
+        >
+          <option value="" disabled>Select</option>
+          <option
+            *ngFor="let customer of customers"
+            [value]="customer.customerId"
+          >
+            {{ customer.customerName }}
+          </option>
+        </select>
+        <ng-template #customers_not_found>
+          <button
+            routerLink="/home/create-customer"
+            class=" text-[#091626] w-56 px-3 py-2 border border-gray-200 rounded-md bg-white focus:outline-none" 
+          >
+            + Créer un nouveau client
+          </button>
+        </ng-template>
+        <div
+          *ngIf="
+            formInvoice.get('customer')?.invalid &&
+            (formInvoice.get('customer')?.dirty ||
+              formInvoice.get('customer')?.touched)
+          "
+          class="text-red-500 text-sm"
+        >
+          Customer is required
+        </div>
+      </div>
+      <div class="flex flex-col space-y-1">
+        <label class="font-medium text-[#091626]">
+          Tax<span class="p-1 text-red-600">*</span>
+        </label>
+
+        <select
+          (change)="onTaxSelected($event)"
+          *ngIf="taxes && taxes.length > 0;else taxsnotfound"
+          formControlName="tax"
+          class="w-56 px-3 py-2 border border-gray-200 rounded-md bg-white focus:outline-none"
+          name="type"
+          id=""
+        >
+          <option value="" disabled>Select</option>
+          <option *ngFor="let tax of taxes" [value]="tax.taxId">
+            {{ tax.name }}
+          </option>
+          
+        </select>
+          <ng-template #taxsnotfound>
+          <button
+           (click)="openDialog()"
+            class=" text-[#091626]  w-56 px-3 py-2 border border-gray-200 rounded-md bg-white focus:outline-none"
+          >
+            + Créer une nouvelle taxe
+          </button>
+        </ng-template>
+        <div
+          *ngIf="
+            formInvoice.get('tax')?.invalid &&
+            (formInvoice.get('tax')?.dirty || formInvoice.get('tax')?.touched)
+          "
+          class="text-red-500 text-sm"
+        >
+          Tax is required
+        </div>
+      </div>
+      <div class="flex flex-col space-y-1">
+        <label class="font-medium text-[#091626]">
+          Date de facturation <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-white w-56 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="date"
+          formControlName="date_f"
+        />
+        <div
+          *ngIf="
+            formInvoice.get('date_f')?.invalid &&
+            (formInvoice.get('date_f')?.dirty ||
+              formInvoice.get('date_f')?.touched)
+          "
+          class="text-red-500 text-sm"
+        >
+          Date is required
+        </div>
+      </div>
+    </div>
+    <!-- items -->
+    <div *ngIf="items_invoice.length == 0" class="text-[#091626] font-medium">
+      Il vous faut repérer les articles présents sur votre facture.
+    </div>
+    <table class="font-sans text-sm tracking-wider border bg-[#FCFCFC]">
+      <thead class="border">
+        <tr>
+          <td class="p-3 text-gray-400 font-medium">Items</td>
+          <td class="p-3 text-gray-400 font-medium">Quantity</td>
+          <td class="p-3 text-gray-400 font-medium">Price</td>
+          <td class="p-3 text-gray-400 font-medium">Amount</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items_invoice; let i = index">
+          <td class="p-3">{{ item.itemName }}</td>
+          <td class="p-3">{{ item.quantity }}</td>
+          <td class="p-3 text-[#0597F2]">{{ item.price }}</td>
+          <td class="p-3">{{ item.quantity * item.price }}</td>
+          <td>
+            <button
+              type="button"
+              class="text-red-400 hover:text-red-600"
+              (click)="removeItem(i)"
+            >
+              <mat-icon>bookmark_remove</mat-icon>
+            </button>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="p-3">
+            <select
+              name="op"
+              id="op"
+              (change)="onItemSelect($event)"
+              class="cursor-pointer bg-white w-36 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200"
+            >
+              <option *ngFor="let item of items" [value]="item.itemId">
+                {{ item.itemName }}
+              </option>
+            </select>
+          </td>
+          <td class="p-3">
+            <input
+              type="number"
+              name="Quantity"
+              id=""
+              min="1"
+              formControlName="quantity"
+              class="bg-white w-20 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200"
+            />
+          </td>
+          <td></td>
+          <td class="p-3">
+            <button
+              type="button"
+              (click)="addItem()"
+              class="font-bold text-gray-500 hover:text-[#091626] px-3 py-2"
+            >
+              <mat-icon>bookmark_add</mat-icon>
+            </button>
+          </td>
+          <!-- <td class="p-2">{{ selectedItem.price }}</td>
+          <td class="p-2">{{ quantity * (selectedItem.price || 0) }}</td>
+          <td class="p-2">
+            <button
+              (click)="addItem()"
+              [disabled]="!selectedItem || quantity <= 0"
+              class="bg-lime-600 text-white px-4 py-2 rounded-md hover:bg-lime-700 transition-colors"
+            >
+              Add
+            </button>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+    <!-- items -->
+
+    <!-- <div
+      routerLink="/home/create-item"
+      class="flex justify-center hover:bg-white hover:cursor-pointer"
+    >
+      <button
+        type="button"
+        class="px-3 py-2 border-none text-[#0597F2] font-medium"
+      >
+        + Add New Item
+      </button>
+    </div> -->
+
+    <!--  -->
+    <hr />
+    <div class="space-y-6">
+      <div class="flex justify-between">
+        <div class="flex flex-col space-y-2">
+          <label class="font-medium text-[#091626]">
+            Notes <span class="text-red-600">*</span>
+          </label>
+          <textarea
+            class="bg-white w-72 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+            type="text"
+            placeholder="Notes"
+            formControlName="notes"
+          ></textarea>
+        </div>
+        <!-- <div
+          class="flex flex-col bg-white space-y-4 p-4 rounded-md shadow-md w-48"
+        >
+          <div class="flex justify-between">
+            <span>Sub Total</span>
+            <span>{{ calculateSubtotal() }} MAD</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Tax</span>
+            <span>{{ selectedTax }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Total</span>
+            <span>{{ calculateTotalAmount() }} MAD</span>
+          </div>
+        </div> -->
+        
+      </div>
+    </div>
+     <button
+      [disabled]="formInvoice.invalid"
+      type="submit"
+      class="bg-[#091626] p-2 rounded-md text-white text-sm font-light w-28"
+    >
+      Save Invoice
+    </button>
+    <!-- <div class="flex justify-end">
+      <button
+        type="submit"
+        class="bg-lime-700 w-56 p-2 rounded-md text-white transition-colors hover:bg-lime-800"
+      >
+        Save Invoice
+      </button>
+    </div> -->
+  </div>
+</form>

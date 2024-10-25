@@ -1,0 +1,73 @@
+<p-toast />
+<p-confirmPopup />
+<div class="p-5 bg-white  ">
+  <div class="flex items-center justify-between ">
+    <p class="text-xl text-[#091626]  font-extralight">Team Users:</p>
+    <button
+      class="hover:cursor-pointer text-white transition-colors p-2 rounded-md bg-[#091626] hover:bg-white  hover:text-[#091626] text-sm font-light"
+      (click)="openDialog()"
+    >
+      New User
+    </button>
+  </div>
+  <div class="">
+  <table  mat-table [dataSource]="dataSource">
+
+    <!-- userId Column -->
+    <ng-container matColumnDef="userId">
+      <th mat-header-cell *matHeaderCellDef > userId </th>
+      <td mat-cell *matCellDef="let element"> {{element.userId}} </td>
+    </ng-container>
+
+    <!-- userName Column -->
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> userName </th>
+      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+    </ng-container>
+
+    <!-- email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+    <!-- more Column -->
+        <ng-container matColumnDef="more" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+            &nbsp;
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button
+                mat-menu-item
+                (click)="confirmDelete($event, element.userId)"
+              >
+                <mat-icon>delete</mat-icon>
+                <span>Remove</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+
+
+  </div>
+  <!-- <div class="overflow-auto">
+    
+  </div> -->
+</div>
+<!-- 
+<div *ngFor="let item of customers">
+  <p>{{item.customerId}}</p>
+  <p>{{item.customerName}}</p>
+  <p>{{item.primaryContactname}}</p>
+</div> -->

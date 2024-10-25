@@ -1,0 +1,6 @@
+<div class="flex">
+  <div  class="w-80 flex flex-col space-y-2 bg-slate-100">
+    <span (click)="select(chat)" *ngFor="let chat of chats">{{chat.chatName}}</span>
+  </div>
+  <!-- <app-message ></app-message> -->
+</div>

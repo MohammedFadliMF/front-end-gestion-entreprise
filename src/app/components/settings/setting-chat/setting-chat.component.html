@@ -1,0 +1,73 @@
+<!-- setting-chat.component.html -->
+<p-toast></p-toast>
+<p-confirmPopup></p-confirmPopup>
+<div class="bg-white h-full flex flex-col space-y-6 p-5 rounded-lg w-full">
+  <div class="flex flex-col space-y-4">
+    <div class="flex justify-between items-center">
+      <p class="text-xl text-[#091626] font-extralight">Interactive Chat Rooms:</p>
+      <button (click)="openDialog()" class="text-sm p-2 text-white  bg-[#091626] rounded-md">Create</button>
+    </div>
+    <hr>
+    <div class="flex items-center space-x-6 overflow-x-auto justify-center">
+      <span *ngFor="let room of rooms" (click)="selectRoom(room)" [ngClass]="{ 'bg-gray-200': room === current_room }" class="p-2 rounded-md bg-gray-100 cursor-pointer hover:bg-gray-200">
+        {{ room }}
+      </span>
+    </div>
+  </div>
+  <div *ngIf="current_room" class=" space-y-4">
+     <div>
+      <table mat-table [dataSource]="dataSource" class="min-w-full divide-y divide-gray-200">
+        <!-- userId Column -->
+        <ng-container matColumnDef="userId">
+          <th mat-header-cell *matHeaderCellDef class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UserId</th>
+          <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">{{ element.userId }}</td>
+        </ng-container>
+
+        <!-- userName Column -->
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UserName</th>
+          <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">{{ element.username }}</td>
+        </ng-container>
+
+        <!-- email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+          <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">{{ element.email }}</td>
+        </ng-container>
+
+        <!-- more Column -->
+        <ng-container matColumnDef="more" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">&nbsp;</th>
+          <td mat-cell *matCellDef="let element" class="px-6 py-4 whitespace-nowrap">
+            <button class="text-red-400 hover:text-red-600" (click)="DeleteUserFromRoom($event, element)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-100"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+    </div>
+     <div *ngIf="!users_invited || users_invited.length === 0" class="text-red-400">
+    Please select users to add to the chat room.
+  </div>
+    <div class="flex justify-between items-center">
+      <!-- <span>These are the current members of this space {{ current_room }}</span> -->
+       
+      <button (click)="addUsersToRoom()" class="p-2 rounded-md text-white flex items-center  bg-[#091626]  " [disabled]="!users_invited || users_invited.length === 0">
+        <!-- <mat-icon>add</mat-icon> -->
+        Add Member 
+      </button>
+      <p-multiSelect [options]="users" [(ngModel)]="users_invited" placeholder="Select Users" scrollHeight="250px" display="chip" [showClear]="true">
+        <ng-template let-option pTemplate="item">
+          <div class="flex align-items-center">
+            <span>{{ option.username }}</span>
+          </div>
+        </ng-template>
+      </p-multiSelect>
+     
+    </div>
+   
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<p-toast />
+<form
+  [formGroup]="formcompany"
+  (ngSubmit)="update()"
+  class="p-5 space-y-2 rounded-md bg-white"
+>
+<p class="text-xl text-[#091626] font-extralight">Company Info:</p>
+  <div class="flex flex-col space-y-8 w-4/6">
+    <div class="text-gray-500 font-normal space-y-1 flex flex-col">
+      <p>you can update your current company name, email and address</p>
+    <hr>
+  </div>
+    <div class="flex space-x-6">
+      <div class="flex flex-col w-full space-y-1">
+        <label class="text-sm text-gray-800">
+          Company Name <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-[#FCFCFC] px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="text"
+          placeholder=""
+          formControlName="companyName"
+        />
+        <!-- <div *ngIf="formItem.get('itemName')?.invalid && (formItem.get('itemName')?.dirty || formItem.get('itemName')?.touched)" class="text-red-500 text-sm">le nom de l'article est requis</div> -->
+      </div>
+      <div class="flex flex-col w-full space-y-1">
+        <label class="text-sm text-gray-800">
+          Email <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-[#FCFCFC] px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="email"
+          placeholder="Email"
+          formControlName="email"
+        />
+        <!-- <div *ngIf="formItem.get('price')?.invalid && (formItem.get('price')?.dirty || formItem.get('price')?.touched)" class="text-red-500 text-sm">le prix de l'article est requis</div> -->
+      </div>
+    </div>
+
+    <div class="flex flex-col space-y-3 w-full">
+      <label class="text-sm text-gray-800"> Address </label>
+      <input
+        class="bg-[#FCFCFC] h-16 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200"
+        type="text"
+        placeholder="address"
+        formControlName="address"
+      />
+    </div>
+    <button
+      [disabled]="formcompany.invalid"
+      class="w-28 text-white transition-colors p-2 rounded-md bg-[#091626] text-sm font-light"
+    >
+      Save
+    </button>
+  </div>
+</form>

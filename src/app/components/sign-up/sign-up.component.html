@@ -1,0 +1,48 @@
+<form [formGroup]="formsignup" (ngSubmit)="register()" class="flex flex-col mx-28 space-y-7 w-full">
+    <!-- <img class="w-14 h-14"  src="../../../assets/akaunting-logo-green.svg" alt=""> -->
+    <p class=" text-base  text-gray-500">Register User</p>
+    <div class=" flex flex-col">
+        <label
+            class=" text-sm  text-gray-500"
+          >
+            Username
+          </label>
+   <input
+              class="bg-lime-50  px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200  sm:text-sm"
+              type="text"
+              placeholder="Username"
+              formControlName="username"
+            />
+    </div>
+  <div class=" flex flex-col">
+        <label
+            htmlFor="email"
+            class=" text-sm  text-gray-500"
+          >
+            Email
+          </label>
+   <input
+              class="bg-lime-50  px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200  sm:text-sm"
+              type="email"
+              placeholder="Email"
+              formControlName="email"
+            />
+    </div>
+    <div class="flex flex-col">
+      <label
+            htmlFor="password"
+            class="text-sm  text-gray-500"
+          >
+            Password 
+          </label>
+    <input
+              class="bg-lime-50  px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200  sm:text-sm"
+              type="password"
+              placeholder="Password"
+              formControlName="password"
+            />
+ </div>
+ <span class="text-red-600" *ngIf="errorMessage">{{errorMessage}}</span>
+
+ <button [disabled]="formsignup.invalid"  class="bg-[#091626]  p-2 rounded-md mt-2 text-white transition-colors ">Register</button>
+</form>

@@ -1,0 +1,189 @@
+<div class="pt-5 space-y-6">
+<p-toast></p-toast>
+
+  <p class="text-2xl text-[#091626] font-semibold">Reports:</p>
+  <div class="flex items-center justify-between">
+    <p class="text-gray-800">
+      Les articles peuvent être des produits ou des services. Vous pouvez
+      utiliser ces articles lors de la création de factures d'achat ou de vente
+      pour remplir automatiquement le prix, la TVA, etc.
+    </p>
+  </div>
+  <hr />
+  <mat-tab-group>
+    <!--profits  -->
+    <mat-tab label="profits">
+      <div class="flex justify-between w-full pt-6">
+        <form class="flex flex-col w-1/2 space-y-4">
+          <div class="flex space-x-2 items-center">
+            <div class="flex flex-col w-full space-y-2">
+              <label class="font-medium text-[#091626]">
+                From <span class="p-1 text-red-600">*</span>
+              </label>
+              <input
+                class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+                type="date"
+              />
+            </div>
+            <div class="flex flex-col w-full space-y-2">
+              <label class="font-medium text-[#091626]">
+                To <span class="p-1 text-red-600">*</span>
+              </label>
+              <input
+                class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+                type="date"
+              />
+            </div>
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label class="font-medium text-[#091626]">
+              Report Type <span class="p-1 text-red-600">*</span>
+            </label>
+            <div class="flex space-x-5">
+              <div class="space-x-2">
+                <input
+                  type="radio"
+                  id="Service"
+                  name="Type"
+                  value="customer"
+                  checked
+                />
+                <label for="customer">By Customer</label>
+              </div>
+
+              <div class="space-x-2">
+                <input type="radio" id="Produit" name="Type" value="customer" />
+                <label for="customer">By Item</label>
+              </div>
+            </div>
+            <!-- <select name="" id="">
+                <option value="">By Customer</option>
+                <option value="">By Item</option>
+            </select> -->
+          </div>
+          <button
+            class="bg-transparent w-56 p-2 rounded-md mt-2 transition-colors text-lime-800 font-medium border border-lime-800 hover:bg-gray-100"
+          >
+            Find Report
+          </button>
+        </form>
+
+        <div
+          class="bg-white flex flex-col w-1/2 p-6 rounded-md mx-4 space-y-6 shadow-lg"
+        >
+          <div class="flex justify-between">
+            <span class="text-lime-600 font-bold">Company Name</span>
+            <span class="text-gray-400">01 Nov 2019 - 30 Nov 2019</span>
+          </div>
+          <div class="flex justify-center">
+            <p class="text-gray-600 font-medium">Sales Report: By Customer</p>
+          </div>
+          <span class="text-gray-700 font-semibold">Grater Matter</span>
+          <div>
+            <div
+              *ngFor="let item of [100, 380, 200, 290]"
+              class="flex justify-between text-gray-400 font-light"
+            >
+              <span>07 Nov 2019</span>
+              <span>$ {{ item }}</span>
+            </div>
+          </div>
+          <hr />
+          <div class="flex justify-between bg-gray-50 p-2">
+            <span class="text-lime-600 font-bold">Total</span>
+            <span class="text-lime-600 font-bold">$ 2000</span>
+          </div>
+        </div>
+      </div>
+      <!--End Sales  -->
+    </mat-tab>
+
+    <!-- Expenses  -->
+    <mat-tab label="Expenses">
+      <div class="flex justify-between w-full pt-6">
+        <form
+          [formGroup]="formexpense"
+          (ngSubmit)="findExpensesByDate()"
+          class="flex flex-col w-1/2 space-y-4"
+        >
+          <div class="flex space-x-2 items-center">
+            <div class="flex flex-col w-full space-y-2">
+              <label class="text-sm text-gray-800">
+                From <span class="text-red-600">*</span>
+              </label>
+              <input
+                class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+                type="date"
+                formControlName="date_1"
+              />
+            </div>
+            <div class="flex flex-col w-full space-y-2">
+              <label class="text-sm text-gray-800">
+                To <span class="text-red-600">*</span>
+              </label>
+              <input
+                class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+                type="date"
+                formControlName="date_2"
+              />
+            </div>
+          </div>
+
+          <button
+            class="bg-transparent w-56 p-2 rounded-md mt-2 transition-colors text-lime-800 font-medium border border-lime-800 hover:bg-gray-100"
+          >
+            Find Report
+          </button>
+        </form>
+
+        <div
+          class="bg-white flex flex-col w-1/2 p-6 rounded-md mx-4 space-y-6 shadow-lg"
+        >
+          <div class="flex justify-between items-center">
+            <div class="flex flex-col">
+              <span class="text-lime-600 font-bold">Company Name</span>
+              <span class="text-gray-700 font-bold"
+                >PROFIT & LOSS & REPORT</span
+              >
+            </div>
+            <span *ngIf="d" class="text-gray-400"
+              >{{ d.date1 }} - {{ d.date2 }}</span
+            >
+          </div>
+          <div class="text-gray-700 font-medium flex justify-between">
+            <span>Income</span>
+            <span>$ 2000.00</span>
+          </div>
+          <span class="text-gray-700 font-semibold">Expenses</span>
+          <div class="flex flex-col">
+            <div *ngIf="message">
+              {{ message }}
+            </div>
+            <div
+              *ngFor="let expense of expenses"
+              class="flex justify-between text-gray-400 font-light"
+            >
+              <span>{{ expense.category }}</span>
+              <span>$ {{ expense.amount }}</span>
+            </div>
+            <div class="flex justify-end">
+              <span *ngIf="expenses" class="text-gray-700 font-semibold"
+                >$ {{ expenses.length }}</span
+              >
+            </div>
+          </div>
+          <hr />
+          <div class="flex justify-between bg-gray-50 p-2">
+            <span class="text-lime-600 font-bold">Net Profit </span>
+            <span class="text-lime-600 font-bold">$ 2000</span>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <!--End Expenses  -->
+
+    <!-- Tax  -->
+    <mat-tab label="Tax"> </mat-tab>
+    <!--End Tax  -->
+  </mat-tab-group>
+</div>

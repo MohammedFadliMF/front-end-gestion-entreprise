@@ -1,0 +1,164 @@
+<p-toast />
+<p-confirmPopup />
+<div class="px-5 pb-5 bg-white rounded-sm space-y-8">
+  <div class="flex items-center justify-between">
+     <p class="text-3xl  text-[#091626]  font-extralight flex items-center gap-2">Invoices<mat-icon >star</mat-icon></p>
+      <button
+      routerLink="/home/create-invoice"
+      class=" text-white transition-colors p-2 rounded-md bg-[#091626]  text-sm font-light"
+    >
+      New Invoice
+    </button>
+
+  </div>
+
+  <!-- filter -->
+  <div class="bg-[#FCFCFC] p-3 flex justify-between rounded-md w-full">
+    <div class="flex flex-col space-y-1">
+      <label class="font-medium text-[#091626]"> Client </label>
+      <select
+        *ngIf="customers && customers.length > 0"
+       (change)="filterData()"
+        [(ngModel)]="selectedCustomerId"
+        class="w-56 px-3 py-2 border border-gray-200 rounded-md bg-white focus:outline-none"
+      >
+        <option
+          *ngFor="let customer of customers"
+          [value]="customer.customerId"
+        >
+          {{ customer.customerName }}
+        </option>
+       
+      </select>
+    </div>
+    <div class="flex flex-col space-y-1">
+      <label class="font-medium text-[#091626]">
+          Status
+      </label>
+       <select
+        (change)="filterData()" [(ngModel)]="selectedStatus"
+        class="w-56 px-3 py-2 border border-gray-200 rounded-md bg-white focus:outline-none"
+        name="type"
+        id=""
+      >
+        <option value="" disabled>Select</option>
+        <option value="DRAFT">DRAFT</option>
+        <option value="SENT">SENT</option>
+      </select>
+    </div>
+    <div class="flex flex-col space-y-1">
+        <label class="font-medium text-[#091626]">
+          Invoice Number
+        </label>
+        <input
+
+          class="bg-white w-56 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="number"
+          min="1"
+          placeholder="Invoice Number"
+          (input)="filterData()" [(ngModel)]="invoiceNumber" 
+        />
+      </div>
+  </div>
+  <!-- filter -->
+
+  <!-- <mat-tab-group> -->
+    <!-- <mat-tab label="Due"> -->
+      <table mat-table [dataSource]="dataSource">
+        <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- id Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>Id</th>
+          <td mat-cell *matCellDef="let e">{{ e.invoiceId }}</td>
+        </ng-container>
+
+        <!-- Customer Column -->
+        <ng-container matColumnDef="customer">
+          <th mat-header-cell *matHeaderCellDef>Customer</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.customer.customerName }}
+          </td>
+        </ng-container>
+
+        <!-- items Column -->
+        <ng-container matColumnDef="items">
+          <th mat-header-cell *matHeaderCellDef>items</th>
+          <td mat-cell *matCellDef="let element">{{ element.items.length }}</td>
+        </ng-container>
+
+        <!-- status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>status</th>
+          <td class="text-blue-500" mat-cell *matCellDef="let element">
+            {{ element.lifecycle }}
+          </td>
+        </ng-container>
+
+        <!-- date_f Column -->
+        <ng-container matColumnDef="date_f">
+          <th mat-header-cell *matHeaderCellDef>date_f</th>
+          <td mat-cell *matCellDef="let element">{{ element.datef }}</td>
+        </ng-container>
+
+        <!-- Tax Column -->
+        <ng-container matColumnDef="tax">
+          <th mat-header-cell *matHeaderCellDef>tax</th>
+          <td class="text-green-400" mat-cell *matCellDef="let element">
+            {{ element.tax.percent }}%
+          </td>
+        </ng-container>
+        <!-- Total Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td class="text-green-400" mat-cell *matCellDef="let element">
+            {{ element.total_amount }}
+            <span class="text-gray-400 p-1">MAD</span>
+          </td>
+        </ng-container>
+
+        <!-- more Column -->
+        <ng-container matColumnDef="more" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+            &nbsp;
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="edit(element)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="confirmdownload($event,element.invoiceId)"
+              >
+                <mat-icon>download</mat-icon>
+                <span>generate</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="sendInvoiceToCustomer(element.invoiceId)"
+              >
+                <mat-icon>mail</mat-icon>
+                <span>Send Invoice</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="confirmDelete($event, element.invoiceId)"
+              >
+                <mat-icon>delete</mat-icon>
+                <span>Remove</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    <!-- </mat-tab> -->
+  <!-- </mat-tab-group> -->
+</div>

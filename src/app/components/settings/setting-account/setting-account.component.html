@@ -1,0 +1,72 @@
+<p-toast />
+<form
+  [formGroup]="formuser"
+  (ngSubmit)="update()"
+  class="p-5 space-y-6 rounded-md bg-white"
+>
+<p class="text-xl text-[#091626] font-extralight">Account Settings:</p>
+  <div class="flex flex-col space-y-8 w-4/6">
+    <div class="text-gray-500 font-normal space-y-1 flex flex-col">
+      <p>you can update your name, email, password</p>
+    <hr>
+  </div>
+    <div class="flex space-x-6">
+      <div class="flex flex-col w-full space-y-1">
+        <label class="text-sm text-gray-800">
+           Name 
+        </label>
+        <input
+          class="bg-[#FCFCFC] px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="text"
+          placeholder=""
+          formControlName="username"
+        />
+        <!-- <div *ngIf="formItem.get('itemName')?.invalid && (formItem.get('itemName')?.dirty || formItem.get('itemName')?.touched)" class="text-red-500 text-sm">le nom de l'article est requis</div> -->
+      </div>
+      <div class="flex flex-col w-full space-y-1">
+        <label class="text-sm text-gray-800">
+          Email
+        </label>
+        <input
+          class="bg-[#FCFCFC] px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="email"
+          placeholder=""
+          formControlName="email"
+        />
+        <!-- <div *ngIf="formItem.get('price')?.invalid && (formItem.get('price')?.dirty || formItem.get('price')?.touched)" class="text-red-500 text-sm">le prix de l'article est requis</div> -->
+      </div>
+    </div>
+
+     <div class="flex space-x-6">
+      <div class="flex flex-col w-full space-y-1">
+        <label class="text-sm text-gray-800">
+           Password 
+        </label>
+        <input
+          class="bg-[#FCFCFC] px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="password"
+          placeholder=""
+          formControlName="password"
+        />
+        <!-- <div *ngIf="formItem.get('itemName')?.invalid && (formItem.get('itemName')?.dirty || formItem.get('itemName')?.touched)" class="text-red-500 text-sm">le nom de l'article est requis</div> -->
+      </div>
+      <div class="flex flex-col w-full space-y-1">
+        <label class="text-sm text-gray-800">
+          Confirm password
+        </label>
+        <input
+          class="bg-[#FCFCFC] px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="password"
+          placeholder=""
+        />
+        <!-- <div *ngIf="formItem.get('price')?.invalid && (formItem.get('price')?.dirty || formItem.get('price')?.touched)" class="text-red-500 text-sm">le prix de l'article est requis</div> -->
+      </div>
+    </div>
+    <button
+      [disabled]="formuser.invalid"
+      class="w-28 text-white transition-colors p-2 rounded-md bg-[#091626] text-sm font-light"
+    >
+      Save
+    </button>
+  </div>
+</form>

@@ -1,0 +1,91 @@
+<form
+  [formGroup]="formCustomer"
+  (ngSubmit)="updateCustmer()"
+  class="p-5 space-y-6 "
+>
+
+  <p class="text-2xl text-[#091626] font-semibold">Update Customer:</p>
+
+
+  <div class="flex flex-col space-y-6 w-full">
+    <hr />
+    <div class="flex space-x-6">
+      <div class="flex flex-col w-full">
+        <label class="text-sm text-gray-800">
+          Name <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="text"
+          placeholder="Name"
+          formControlName="customerName"
+        />
+      </div>
+      <div class="flex flex-col w-full">
+        <label class="text-sm text-gray-800">
+          Email <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="email"
+          placeholder="Email"
+          formControlName="email"
+        />
+      </div>
+    </div>
+
+    <div class="flex space-x-6">
+      <div class="flex flex-col w-full">
+        <label class="text-sm text-gray-800">
+          Phone <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="tel"
+          placeholder="Phone"
+          formControlName="phone"
+        />
+      </div>
+      <div class="flex flex-col w-full">
+        <label class="text-sm text-gray-800">
+          Primary Contact Name <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="text"
+          placeholder="Primary Contact Name"
+          formControlName="primaryContactname"
+        />
+      </div>
+    </div>
+    <div class="flex space-x-6">
+      <div class="flex flex-col w-full">
+        <label class="text-sm text-gray-800">
+          BillingAddress <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="text"
+          placeholder="BillingAddress"
+          formControlName="billingAddress"
+        />
+      </div>
+      <div class="flex flex-col w-full">
+        <label class="text-sm text-gray-800">
+          ShippingAddress <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="text"
+          placeholder="ShippingAddress"
+          formControlName="shippingAddress"
+        />
+      </div>
+    </div>
+  </div>
+    <div class="flex justify-end w-full">
+      <button [disabled]="formCustomer.invalid" class="bg-[#091626]  p-2 rounded-md  text-white">
+        Save Customer 
+      </button>
+    </div>
+</form>

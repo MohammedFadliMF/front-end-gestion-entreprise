@@ -1,0 +1,89 @@
+<div class="flex h-screen w-screen">
+  <p-toast></p-toast>
+  <!-- left side -->
+  <div
+    class="flex justify-center items-center h-screen w-full bg-slate-400 opacity-75"
+  >
+    <img
+      src="../../../assets/createC.png"
+      alt=""
+      srcset=""
+      class="h-screen w-full"
+    />
+  </div>
+  <!--end left side -->
+
+  <!-- right side -->
+  <form
+    [formGroup]="formcompany"
+    (ngSubmit)="createCompany()"
+    class="bg-[#fff] flex flex-col justify-center items-center h-full w-full space-y-6"
+  >
+    <!-- <img
+      class="w-20 h-20"
+      src="../../../assets/akaunting-logo-green.svg"
+      alt=""
+    /> -->
+     <p class="text-2xl text-[#091626] font-semibold">Create Company</p>
+
+    <div class="flex space-x-9">
+      <div class="flex flex-col">
+        <label class="text-sm text-[#091626]"> Company Name  <span class="text-red-600">*</span> </label>
+        <input
+          class="bg-lime-50 w-56 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+          type="text"
+          placeholder="CompanyName"
+          formControlName="companyName"
+        />
+        <div *ngIf="formcompany.get('companyName')?.invalid && (formcompany.get('companyName')?.dirty || formcompany.get('companyName')?.touched)" class="text-red-500 text-sm">Name is required</div>
+
+      </div>
+      <div class=" flex flex-col">
+        <label
+            class=" text-sm  text-[#091626]"
+          >
+            Email  <span class="text-red-600">*</span>
+
+          </label>
+           <input
+              class="bg-lime-50 w-56 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200  sm:text-sm"
+              type="text"
+              placeholder="Email"
+              formControlName="email"
+            />
+           <div *ngIf="formcompany.get('email')?.invalid && (formcompany.get('email')?.dirty || formcompany.get('email')?.touched)" class="text-red-500 text-sm">Email is required</div>
+
+      </div>
+    </div>
+    <div class="flex space-x-9">
+      <div class=" flex flex-col">
+        <label
+            class=" text-sm  text-[#091626]"
+          >
+            Address  <span class="text-red-600">*</span>
+          </label>
+          <input
+              class="bg-lime-50 w-56 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200  sm:text-sm"
+              type="text"
+              placeholder="Address"
+              formControlName="address"
+            />
+         <div *ngIf="formcompany.get('address')?.invalid && (formcompany.get('address')?.dirty || formcompany.get('address')?.touched)" class="text-red-500 text-sm">Address is required</div>
+
+      </div>
+      <div class="flex flex-col">
+        <label class="text-sm text-[#091626]"> Votre rôle dans cette entreprise </label>
+         <span class="bg-lime-50 w-56 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm">
+          ADMIN
+         </span>
+      </div>
+    </div>
+    <button
+    [disabled]="formcompany.invalid"
+      class="bg-[#091626] w-56  p-2 rounded-md  text-white text-sm font-light hover:cursor-pointer"
+    >
+      Save 
+    </button> 
+  </form>
+  <!-- end right side -->
+</div>

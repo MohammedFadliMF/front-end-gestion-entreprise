@@ -1,0 +1,164 @@
+
+<div class="flex justify-end">
+    <button  mat-dialog-actions  class=" border-none" (click)="onCancel()"> <mat-icon>cancel</mat-icon> </button>
+</div>
+<form
+  mat-dialog-content
+  [formGroup]="formEdit"
+  (ngSubmit)="editInvoice()"
+  class="bg-[#FCFCFC] p-5 space-y-5"
+>
+  <div class="flex justify-between">
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm text-gray-800"> Customer </label>
+      <select
+        *ngIf="customers && customers.length > 0"
+        formControlName="customer"
+        class="px-3 py-2 border border-gray-200 rounded-md bg-white focus:outline-none"
+        name="type"
+        id=""
+      >
+        <option
+          *ngFor="let customer of customers"
+          [ngValue]="customer.customerId"
+        >
+          {{ customer.customerName }}
+        </option>
+      </select>
+    </div>
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm text-gray-800"> Tax </label>
+
+      <select
+        *ngIf="taxes && taxes.length > 0"
+        formControlName="tax"
+        class="px-3 py-2 border border-gray-200 rounded-md bg-white focus:outline-none"
+        name="type"
+        id=""
+      >
+        <option *ngFor="let tax of taxes" [ngValue]="tax.taxId">
+          {{ tax.name }}
+        </option>
+      </select>
+    </div>
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm text-gray-800"> Status </label>
+      <!-- <input
+        class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+        formControlName="lifecycle"
+      /> --> 
+      <select
+        formControlName="lifecycle"
+        class="px-3 py-2 border border-gray-200 rounded-md bg-white focus:outline-none"
+        name="type"
+        id=""
+      >
+        <option value="DRAFT">DRAFT</option>
+        <option value="DUE">DUE</option>
+      </select>
+      <div
+        *ngIf="
+          formEdit.get('lifecycle')?.invalid &&
+          (formEdit.get('lifecycle')?.dirty ||
+            formEdit.get('lifecycle')?.touched)
+        "
+        class="text-red-500 text-sm"
+      >
+        Status is required
+      </div>
+    </div>
+    <div class="flex flex-col space-y-1">
+      <label class="text-sm text-gray-800">
+        Billing date <span class="text-red-600">*</span>
+      </label>
+      <input
+        class="bg-white px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200 sm:text-sm"
+        type="date"
+        placeholder="Date de facturation "
+        formControlName="date_f"
+      />
+      <div
+        *ngIf="
+          formEdit.get('date_f')?.invalid &&
+          (formEdit.get('date_f')?.dirty || formEdit.get('date_f')?.touched)
+        "
+        class="text-red-500 text-sm"
+      >
+        Date is required
+      </div>
+    </div>
+  </div>
+  <table class="font-sans text-sm tracking-wider border bg-white">
+    <thead class="border">
+      <tr>
+        <td class="p-3 text-gray-400 font-medium">id</td>
+        <td class="p-3 text-gray-400 font-medium">name</td>
+        <td class="p-3 text-gray-400 font-medium">Price</td>
+        <td class="p-3 text-gray-400 font-medium">Amount</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let item of items.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <td class="p-3">{{ item.get("itemId")?.value }}</td>
+        <td class="p-3">{{ item.get("itemName")?.value }}</td>
+        <td class="p-3 text-[#0597F2]">{{ item.get("price")?.value }}</td>
+        <td class="p-3">{{ item.get("quantity")?.value }}</td>
+        <td><button mat-button (click)="increaseQuantity(i)">+</button></td>
+        <td>
+          <button mat-button (click)="removeItem(i, $event)">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </td>
+      </tr>
+      <!-- Add new item  -->
+      <tr>
+        <td class="p-3">
+          <select
+            name="op"
+            id="op"
+            (change)="onItemSelect($event)"
+            class="cursor-pointer bg-white w-36 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200"
+          >
+            <option *ngFor="let item of items_company" [value]="item.itemId">
+              {{ item.itemName }}
+            </option>
+          </select>
+        </td>
+        <td class="p-3">
+          <input
+            type="number"
+            name="Quantity"
+            id=""
+            min="1"
+            formControlName="quantity"
+            class="bg-white w-20 px-3 py-2 border border-gray-200 rounded-md shadow-sm placeholder-gray-400 focus:outline-gray-200"
+          />
+        </td>
+        <td class="p-3">
+          <button
+            type="button"
+            (click)="addItem()"
+            class="text-[#0597F2] font-bold border px-3 py-2 rounded-md"
+          >
+            <mat-icon>playlist_add</mat-icon>
+          </button>
+        </td>
+      </tr>
+      <!-- Add new item  -->
+    </tbody>
+  </table>
+  <!-- items -->
+  <div class="flex gap-4 justify-end">
+    <!-- <button  class="w-32 border rounded-md" (click)="onCancel()">Cancel</button> -->
+    <button
+      [disabled]="formEdit.invalid"
+      class="hover:cursor-pointer text-white transition-colors p-2 w-32 rounded-md bg-[#091626] text-sm font-light"
+      type="submit"
+    >
+      Save
+    </button>
+  </div>
+</form>

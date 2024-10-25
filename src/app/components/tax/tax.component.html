@@ -1,0 +1,72 @@
+<p-toast />
+<p-confirmPopup />
+<div class="px-5 pb-5 bg-white rounded-md space-y-8">
+  <div class=" flex  items-center justify-between">
+     <p class="text-3xl  text-[#091626]  font-extralight flex items-center gap-2">taxes<mat-icon >star</mat-icon></p>
+      <button
+        *ngIf="current_company.permission === 'ADMIN'"
+      (click)="openDialog()" class=" hover:cursor-pointer bg-[#091626] text-white font-light  p-2 rounded-md   ">
+        New Tax
+      </button>
+  </div>
+  <table  mat-table [dataSource]="dataSource">
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.taxId}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- percent Column -->
+    <ng-container matColumnDef="percent">
+      <th mat-header-cell *matHeaderCellDef> percent </th>
+      <td mat-cell *matCellDef="let element"> {{element.percent}} </td>
+    </ng-container>
+
+    <!-- description Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> description </th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+      <!-- more Column -->
+        <ng-container matColumnDef="more" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+            &nbsp;
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="edit(element)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
+           
+              <button
+                mat-menu-item
+                (click)="confirmDelete($event, element.taxId)"
+              >
+                <mat-icon>delete</mat-icon>
+                <span>Remove</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+   
+</div>
